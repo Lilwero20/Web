@@ -1,4 +1,23 @@
 <!DOCTYPE html>
+<link rel="icon" type="image/png" href="file:///C:/Users/Usuario/Downloads/Para%20mis%20videos/CHUCHOs.png">
+<script>
+    // Reemplaza con tu canal de YouTube
+    const channelId = "UCpQw2pQnXlQkYvNULmKM2Vw"; // Ejemplo: WeroScripts
+    // IDs de videos de tu canal (puedes agregar más)
+    const videos = [
+        "dQw4w9WgXcQ",
+        "kXYiU_JCYtU",
+        "3JZ_D3ELwOQ"
+    ];
+    // Selecciona uno al azar
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    window.addEventListener('DOMContentLoaded', function() {
+        const iframe = document.querySelector('.video iframe');
+        if (iframe) {
+            iframe.src = "https://www.youtube.com/embed/" + randomVideo;
+        }
+    });
+</script>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
