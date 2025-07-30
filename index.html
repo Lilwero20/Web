@@ -1,25 +1,11 @@
 <!DOCTYPE html>
-<link rel="icon" type="image/png" href="file:///C:/Users/Usuario/Downloads/Para%20mis%20videos/CHUCHOs.png">
-<script>
-    const channelId = "UCpQw2pQnXlQkYvNULmKM2Vw";
-    const videos = [
-        "n9KWlLykPGw",
-        "n9KWlLykPGw",
-        "ydUmyM_uSGk"
-    ];
-    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
-    window.addEventListener('DOMContentLoaded', function () {
-        const iframe = document.querySelector('.video iframe');
-        if (iframe) {
-            iframe.src = "https://www.youtube.com/embed/" + randomVideo;
-        }
-    });
-</script>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Consigue el Script de WeroScripts</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <!-- Favicon (cambia la ruta si lo subes a una carpeta) -->
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
         body {
             background: #18191a;
@@ -59,8 +45,15 @@
         }
         .video {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 24px;
+        }
+        .video-text {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #00ffe7;
+            text-align: center;
         }
         .buttons {
             display: flex;
@@ -131,6 +124,7 @@
             .container { padding: 12px 2vw; }
             h1 { font-size: 1.3em; }
             .btn { font-size: 1em; padding: 10px 12px; }
+            .video-text { font-size: 1em; }
         }
     </style>
 </head>
@@ -141,11 +135,12 @@
             by <a href="https://www.youtube.com/@WeroScripts" target="_blank">WeroScripts</a>
         </div>
         <div class="video">
+            <div id="random-video-text" class="video-text">Mira un video random de mi canal: @WeroScripts</div>
             <iframe width="100%" height="315" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class="buttons">
-            <a href="https://link-hub.net/1371356/LIR357tQn6YI" class="btn orange" target="_blank">Script Método #1(Linkvertise, Fast)</a>
-            <a href="https://lootdest.org/s?7H02t44W" class="btn purple" target="_blank">Script Método #2(Lootlabs, Slow)</a>
+            <a href="https://link-hub.net/1371356/LIR357tQn6YI" class="btn orange" target="_blank">Script Método #1 (Linkvertise, Fast)</a>
+            <a href="https://lootdest.org/s?7H02t44W" class="btn purple" target="_blank">Script Método #2 (Lootlabs, Slow)</a>
         </div>
         <div class="steps">
             <h2>Cómo conseguir tu script:</h2>
@@ -160,5 +155,26 @@
             <a href="https://discord.gg/rTAJWq72" target="_blank">Discord</a>
         </div>
     </div>
+
+    <script>
+        const channelId = "UCpQw2pQnXlQkYvNULmKM2Vw";
+        const videos = [
+            "n9KWlLykPGw",
+            "ydUmyM_uSGk"
+        ];
+        const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+        
+        window.addEventListener('DOMContentLoaded', function () {
+            const iframe = document.querySelector('.video iframe');
+            if (iframe) {
+                iframe.src = "https://www.youtube.com/embed/" + randomVideo;
+            }
+            // Actualizar el texto del video random
+            const randomVideoText = document.getElementById('random-video-text');
+            if (randomVideoText) {
+                randomVideoText.textContent = "Mira un video random de mi canal: @WeroScripts";
+            }
+        });
+    </script>
 </body>
 </html>
