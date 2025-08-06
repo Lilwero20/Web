@@ -3,273 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <title>Consigue el Script de WeroScripts</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
-    <!-- Favicons para múltiples dispositivos -->
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="Assets/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="Assets/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="Assets/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="Assets/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="Assets/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="Assets/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="Assets/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="Assets/apple-icon-152x152.png">
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="Assets/apple-icon-180x180.png">
-    
-    <!-- Android/Chrome Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="Assets/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="Assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="Assets/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="Assets/favicon-16x16.png">
-    
-    <!-- Windows Metro Icons -->
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="Assets/ms-icon-144x144.png">
-    
-    <!-- Configuración general -->
     <link rel="manifest" href="Assets/manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0f172a">
 
     <style>
-        body {
-            background: #18191a;
-            color: #fff;
-            font-family: 'Montserrat', Arial, sans-serif;
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --secondary-dark: #d97706;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: var(--opacity); }
+        }
+        
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 40px auto;
-            background: #23272a;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px #0006;
-            padding: 32px 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            z-index: 1;
         }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         h1 {
-            font-size: 2.4em;
-            margin-bottom: 0.2em;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
             text-align: center;
+            background: linear-gradient(to right, #f59e0b, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeInDown 1s ease;
         }
+        
         .by {
-            color: #00ffe7;
-            font-size: 1.1em;
+            color: var(--gray);
+            font-size: 1.1rem;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease;
         }
+        
         .by a {
-            color: #00ffe7;
+            color: var(--accent);
             text-decoration: none;
-            font-weight: 700;
-            transition: color 0.2s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
         }
+        
+        .by a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
         .by a:hover {
-            color: #ffb700;
+            color: var(--secondary);
         }
+        
+        .by a:hover::after {
+            width: 100%;
+        }
+        
         .video {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease;
         }
+        
         .video-text {
-            margin-bottom: 10px;
-            font-size: 1.2em;
-            color: #00ffe7;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--secondary);
             text-align: center;
+            font-weight: 500;
         }
+        
+        .video iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video iframe:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+        
         .buttons {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 28px;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
+        
         .button-row {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 1rem;
             width: 100%;
         }
+        
         .btn {
-            padding: 14px 28px;
+            padding: 16px 32px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 700;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
+            min-width: 250px;
+            text-align: center;
+            z-index: 1;
+            transform: translateY(0);
+            color: white;
         }
-        .btn::after {
+        
+        .btn::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
         }
-        .btn:focus:not(:active)::after {
-            animation: ripple 0.6s ease-out;
+        
+        .btn:hover::before {
+            transform: translateX(100%);
         }
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
         .btn.orange {
-            background: #ff9800;
-            color: #fff;
+            background: linear-gradient(45deg, var(--secondary), var(--secondary-dark));
         }
-        .btn.orange:hover {
-            background: #e67c00;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+        
         .btn.purple {
-            background: #9b59b6;
-            color: #fff;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
         }
-        .btn.purple:hover {
-            background: #7c3fa0;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+        
         .btn.blue {
-            background: #3498db;
-            color: #fff;
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
         }
-        .btn.blue:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            animation: pulse 1.5s infinite;
+        
+        .btn.purple-light {
+            background: linear-gradient(45deg, #a855f7, #7e22ce);
+            animation: pulse 2s infinite;
         }
+        
         @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
-            }
+            0% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+            50% { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4); }
+            100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
         }
+        
         .steps {
-            background: #202225;
-            border-radius: 10px;
-            padding: 18px 20px;
-            margin-bottom: 24px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--card-border);
+            animation: fadeInUp 1s ease;
         }
+        
         .steps h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: #ffb700;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        
+        .steps h2::before {
+            content: '✦';
+            color: var(--accent);
+        }
+        
         .steps ol {
             margin: 0;
             padding-left: 20px;
+            list-style-type: none;
         }
+        
+        .steps li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px;
+            line-height: 1.6;
+        }
+        
+        .steps li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
         .social {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 18px;
+            gap: 1rem;
+            margin-top: 2rem;
         }
+        
         .social a {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 6px;
-            background: #333;
-            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
             text-decoration: none;
-            font-size: 1em;
-            transition: background 0.2s;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
         .social a:hover {
-            background: #00ffe7;
-            color: #18191a;
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
         }
-        @media (max-width: 600px) {
-            .container { padding: 12px 2vw; }
-            h1 { font-size: 1.3em; }
-            .btn { font-size: 1em; padding: 10px 12px; }
-            .video-text { font-size: 1em; }
+        
+        .social a i {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .video iframe {
+                height: 250px;
+            }
+            
+            .btn {
+                min-width: 100%;
+                padding: 14px 20px;
+            }
+            
             .button-row {
                 flex-direction: column;
-                align-items: center;
+            }
+        }
+        
+        /* Animaciones personalizadas */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Consigue el Script de WeroScripts</h1>
-        <div class="by">
+    <div class="stars" id="stars"></div>
+    
+    <div class="container animate__animated animate__fadeIn">
+        <h1 class="animate__animated animate__fadeInDown">Consigue el Script de WeroScripts</h1>
+        <div class="by animate__animated animate__fadeIn">
             by <a href="https://www.youtube.com/@WeroScripts" target="_blank">WeroScripts</a>
         </div>
-        <div class="video">
-            <div id="random-video-text" class="video-text">Mira un video random de mi canal: </div>
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+        
+        <div class="video animate__animated animate__fadeIn">
+            <div id="random-video-text" class="video-text">Mira un video random de mi canal:</div>
+            <iframe width="100%" height="400" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
         </div>
+        
         <div class="buttons">
             <div class="button-row">
-                <a href="https://rkns.link/rhh0q" class="btn orange" target="_blank">Script Método #1 (Rekonise, Linkvertise)</a>
-                <a href="https://rkns.link/336ud" class="btn purple" target="_blank">Script Método #2 (Rekonise, Lootlabs)</a>
+                <a href="https://rkns.link/rhh0q" class="btn orange animate__animated animate__fadeInLeft" target="_blank">Script Método #1 (Rekonise, Linkvertise)</a>
+                <a href="https://rkns.link/336ud" class="btn purple animate__animated animate__fadeInRight" target="_blank">Script Método #2 (Rekonise, Lootlabs)</a>
             </div>
+            
             <div class="button-row">
-                <a href="https://rkns.link/ym9l1" class="btn blue" target="_blank">Consigue Delta Aqui (Rekonise, Linkvertise)</a>
+                <a href="https://rkns.link/ym9l1" class="btn blue animate__animated animate__fadeInLeft" target="_blank">Consigue Delta Aqui (Rekonise, Linkvertise)</a>
+                <a href="https://rkns.link/e17vb" class="btn purple-light animate__animated animate__fadeInRight" target="_blank">Consigue KRNL Aqui (Rekonise, Linkvertise)</a>
             </div>
         </div>
-        <div class="steps">
+        
+        <div class="steps animate__animated animate__fadeInUp">
             <h2>Cómo conseguir tu script:</h2>
             <ol>
-                <li>Presiona en el método 1 o método 2.</li>
-                <li>Completa las tareas que se te solicitan.</li>
-                <li>Asegúrate de seguir el tutorial al pie de la letra.</li>
-                <li>Por último, ¡disfruta!, Si Tienes Problemas Unete Al Discord.</li>
+                <li>Selecciona uno de los métodos disponibles arriba.</li>
+                <li>Completa las tareas requeridas en la página de destino.</li>
+                <li>Sigue cuidadosamente las instrucciones del tutorial.</li>
+                <li>¡Disfruta de tu script! Únete al Discord si necesitas ayuda.</li>
             </ol>
         </div>
+        
         <div class="social">
-            <a href="https://discord.gg/rTAJWq72" target="_blank">Discord</a>
+            <a href="https://discord.gg/EmsvzWF3xK" class="animate__animated animate__fadeIn" target="_blank">
+                <i>👾</i> Discord
+            </a>
         </div>
     </div>
 
     <script>
+        // Crear estrellas dinámicas
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 100;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Posición aleatoria
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 3;
+                
+                // Opacidad y duración aleatorias
+                const opacity = Math.random() * 0.8 + 0.2;
+                const duration = Math.random() * 5 + 3 + 's';
+                const delay = Math.random() * 5 + 's';
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.setProperty('--opacity', opacity);
+                star.style.setProperty('--duration', duration);
+                star.style.animationDelay = delay;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Cargar video aleatorio
         const channelId = "UCpQw2pQnXlQkYvNULmKM2Vw";
         const videos = [
             "n9KWlLykPGw",
             "ydUmyM_uSGk"
         ];
-        const randomVideo = videos[Math.floor(Math.random() * videos.length)];
         
-        window.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            const randomVideo = videos[Math.floor(Math.random() * videos.length)];
             const iframe = document.querySelector('.video iframe');
             if (iframe) {
-                iframe.src = "https://www.youtube.com/embed/" + randomVideo;
+                iframe.src = `https://www.youtube.com/embed/${randomVideo}?autoplay=0&rel=0`;
             }
-            // Actualizar el texto del video random
-            const randomVideoText = document.getElementById('random-video-text');
-            if (randomVideoText) {
-                randomVideoText.textContent = "Mira un video random de mi canal:";
-            }
+            
+            // Efecto hover suave para los botones
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.transform = 'translateY(-5px)';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Efecto de carga suave para todo el contenido
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // Efecto de movimiento parallax para las estrellas
+        document.addEventListener('mousemove', (e) => {
+            const stars = document.getElementById('stars');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.style.transform = `translate(-${x * 20}px, -${y * 20}px)`;
         });
     </script>
 </body>
 </html>
-
