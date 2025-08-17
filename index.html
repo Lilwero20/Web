@@ -176,111 +176,77 @@
   </div>
 
   <script>
-    // ===== PARTICULAS CON LINEAS =====
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
+    // ===== PARTICULAS CON LINEAS MEJORADAS =====
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
 
-    window.addEventListener("resize", () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    });
+window.addEventListener("resize", () => {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+});
 
-    const particlesArray = [];
-    const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
-    const particleCount = 60;
-    const maxDistance = 120;
+const particlesArray = [];
+const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
+const particleCount = 120; // Más partículas
+const maxDistance = 150;   // Mayor distancia de conexión
 
-    class Particle {
-      constructor(){
-        this.x = Math.random()*w;
-        this.y = Math.random()*h;
-        this.radius = Math.random()*2+1;
-        this.color = colors[Math.floor(Math.random()*colors.length)];
-        this.speedX = (Math.random()-0.5)*0.5;
-        this.speedY = (Math.random()-0.5)*0.5;
-      }
-      update(){
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if(this.x < 0 || this.x > w) this.speedX *= -1;
-        if(this.y < 0 || this.y > h) this.speedY *= -1;
-      }
-      draw(){
+class Particle {
+  constructor(){
+    this.x = Math.random()*w;
+    this.y = Math.random()*h;
+    this.radius = Math.random()*2+1.5;
+    this.color = colors[Math.floor(Math.random()*colors.length)];
+    this.speedX = (Math.random()-0.5)*0.7;
+    this.speedY = (Math.random()-0.5)*0.7;
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if(this.x < 0 || this.x > w) this.speedX *= -1;
+    if(this.y < 0 || this.y > h) this.speedY *= -1;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
+
+function connectParticles(){
+  for(let a=0;a<particlesArray.length;a++){
+    for(let b=a+1;b<particlesArray.length;b++){
+      let dx = particlesArray[a].x - particlesArray[b].x;
+      let dy = particlesArray[a].y - particlesArray[b].y;
+      let distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < maxDistance){
         ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
+        ctx.strokeStyle = "rgba(76,201,240,"+(1-distance/maxDistance)+")";
+        ctx.lineWidth = 1;
+        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+        ctx.stroke();
+        ctx.closePath();
       }
     }
+  }
+}
 
-    for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
+function animateParticles(){
+  ctx.clearRect(0,0,w,h);
+  particlesArray.forEach(p=>{
+    p.update();
+    p.draw();
+  });
+  connectParticles();
+  requestAnimationFrame(animateParticles);
+}
 
-    function connectParticles(){
-      for(let a=0;a<particlesArray.length;a++){
-        for(let b=a+1;b<particlesArray.length;b++){
-          let dx = particlesArray[a].x - particlesArray[b].x;
-          let dy = particlesArray[a].y - particlesArray[b].y;
-          let distance = Math.sqrt(dx*dx + dy*dy);
-          if(distance < maxDistance){
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(76,201,240,"+(1-distance/maxDistance)+")";
-            ctx.lineWidth = 1;
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        }
-      }
-    }
-
-    function animateParticles(){
-      ctx.clearRect(0,0,w,h);
-      particlesArray.forEach(p=>{
-        p.update();
-        p.draw();
-      });
-      connectParticles();
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-
-    // ===== TARJETAS & IFRAME =====
-    const cards = document.querySelectorAll(".card");
-    const mainContent = document.getElementById("mainContent");
-    const iframeContainer = document.getElementById("iframeContainer");
-    const weroHubFrame = document.getElementById("weroHubFrame");
-    const closeBtn = document.getElementById("closeBtn");
-    const searchInput = document.getElementById("search");
-    const noResults = document.getElementById("noResults");
-
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        if(card.dataset.title === "WeroHub") {
-          window.location.hash = "menunm=1";
-          weroHubFrame.src = "WeroHub.html";
-          mainContent.style.display = "none";
-          iframeContainer.classList.add("show");
-        }
-      });
-    });
-
-    closeBtn.addEventListener("click", () => {
-      iframeContainer.classList.remove("show");
-      setTimeout(()=> mainContent.style.display = "block", 500);
-      weroHubFrame.src = "";
-      history.pushState("", document.title, window.location.pathname);
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-      if(window.location.hash.includes("menunm=1")) {
-        weroHubFrame.src = "WeroHub.html";
-        mainContent.style.display = "none";
-        iframeContainer.classList.add("show");
-      }
-    });
+animateParticles();
 
     // ===== BÚSQUEDA EN TIEMPO REAL =====
     searchInput.addEventListener("input", () => {
@@ -302,3 +268,4 @@
 
 </body>
 </html>
+
