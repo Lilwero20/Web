@@ -181,20 +181,20 @@
   const searchInput = document.getElementById("search");
   const noResults = document.getElementById("noResults");
 
-  // Inicializar tarjetas originales
-  function initCards(){
-    document.querySelectorAll(".card").forEach(card=>{
-      card.originalTitle=card.dataset.title;
-      card.originalSubtitle=card.dataset.subtitle;
-      card.addEventListener("click",()=>{openCard(card, card.dataset.hash, card.dataset.title+".html");});
-    });
-  }
-
   function openCard(card, hash, html){
     window.location.hash=hash;
     weroHubFrame.src=html;
     mainContent.style.display="none";
     iframeContainer.classList.add("show");
+  }
+
+  function initCards(){
+    document.querySelectorAll(".card").forEach((card,i)=>{
+      card.originalTitle=card.dataset.title;
+      card.originalSubtitle=card.dataset.subtitle;
+      const htmlFile = `Assets/Tabs/${card.dataset.title.replace(/\s/g,'')}.html`; 
+      card.addEventListener("click",()=>{openCard(card, card.dataset.hash, htmlFile);});
+    });
   }
 
   closeBtn.addEventListener("click",()=>{
@@ -207,9 +207,10 @@
   // Abrir por hash al cargar
   window.addEventListener("DOMContentLoaded", ()=>{
     const hash=window.location.hash.substring(1);
-    document.querySelectorAll(".card").forEach(card=>{
+    document.querySelectorAll(".card").forEach((card)=>{
+      const htmlFile = `Assets/Tabs/${card.dataset.title.replace(/\s/g,'')}.html`;
       if(card.dataset.hash===hash){
-        openCard(card, hash, card.dataset.title+".html");
+        openCard(card, hash, htmlFile);
       }
     });
     initCards();
@@ -236,36 +237,37 @@
     noResults.style.display = anyVisible ? "none" : "block";
   });
 
-  // ===== FUNCION SIMPLIFICADA PARA CREAR NUEVAS TARJETAS =====
-  function createTab({title, subtitle, image, html}){
-    const index = cardsContainer.children.length + 1;
-    const hash = `menumn=${index}`;
-    const div = document.createElement("div");
-    div.classList.add("card");
-    div.dataset.title=title;
-    div.dataset.subtitle=subtitle;
-    div.dataset.hash=hash;
-    div.innerHTML=`<img src="${image}" alt="${title}"><div class="card-content"><h3>${title}</h3><p>${subtitle}</p></div>`;
-    div.originalTitle=title; div.originalSubtitle=subtitle;
-    div.addEventListener("click",()=>{openCard(div, hash, html);});
-    cardsContainer.appendChild(div);
-  }
+  function createTab({title, subtitle, image}){
+  const index = cardsContainer.children.length + 1;
+  const hash = `menumn=${index}`;
+  const htmlFile = `Assets/Tabs/${title.replace(/\s/g,'')}.html`; // Genera automáticamente el HTML basado en el título
 
-createTab({
-  title: "99 Days In The Forest",
-  subtitle: "AutoFarm Diamonds",
-  image: "Assets/dias.png",
-  html: "99days"
-});
+  const div = document.createElement("div");
+  div.classList.add("card");
+  div.dataset.title = title;
+  div.dataset.subtitle = subtitle;
+  div.dataset.hash = hash;
+  div.innerHTML = `
+    <img src="${image}" alt="${title}">
+    <div class="card-content">
+      <h3>${title}</h3>
+      <p>${subtitle}</p>
+    </div>
+  `;
+  div.originalTitle = title;
+  div.originalSubtitle = subtitle;
+  div.addEventListener("click", ()=>{ openCard(div, hash, htmlFile); });
+  cardsContainer.appendChild(div);
+}
 
-  
-  // EJEMPLO: createTab({title:"ScriptDos", subtitle:"Script test", image:"Assets/image.png", html:"Script.html"});
+  // EJEMPLO
+  createTab({
+    title: "99 Days In The Forest",
+    subtitle: "AutoFarm Diamonds",
+    image: "Assets/dias.png",
+  });
+
 </script>
 
 </body>
 </html>
-
-
-
-
-
