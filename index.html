@@ -1,312 +1,224 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu de Scripts</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f1a;
-      color: #fff;
-      overflow-x: hidden;
-    }
-    header {
-      padding: 15px;
-      text-align: center;
-      background: #1a1a2e;
-      position: relative;
-      z-index: 10;
-    }
-    header input {
-      width: 60%;
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .card {
-      display: flex;
-      align-items: center;
-      background: rgba(31,31,47,0.9);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.2s, background 0.2s;
-      backdrop-filter: blur(5px);
-    }
-    .card:hover {
-      transform: scale(1.03);
-      background: rgba(31,31,47,1);
-    }
-    .card img {
-      width: 120px;
-      height: 100%;
-      object-fit: cover;
-    }
-    .card-content {
-      padding: 15px;
-    }
-    .card-content h3 {
-      margin: 0;
-      font-size: 20px;
-      color: #4cc9f0;
-    }
-    .card-content p {
-      margin: 5px 0 0;
-      font-size: 14px;
-      color: #bbb;
-    }
-    #iframeContainer {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0f0f1a;
-      z-index: 999;
-      flex-direction: column;
-    }
-    #closeBtn {
-      display: inline-block;
-      margin: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #fff;
-      cursor: pointer;
-      background: #1a1a2e;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: none;
-    }
-    #closeBtn:hover {
-      color: red;
-    }
-    iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-    }
-    #noResults {
-      color: #ff6b6b;
-      text-align: center;
-      font-size: 18px;
-      margin-top: 20px;
-      display: none;
-    }
-    canvas#particles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu de Scripts</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f1a;
+    color: #fff;
+  }
+  header {
+    padding: 15px;
+    text-align: center;
+    background: #1a1a2e;
+  }
+  header input {
+    width: 60%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  .card {
+    display: flex;
+    align-items: center;
+    background: #1f1f2f;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s;
+    position: relative;
+  }
+  .card:hover { transform: scale(1.03); }
+  .card img { width: 120px; height: 100%; object-fit: cover; }
+  .card-content { padding: 15px; }
+  .card-content h3 { margin: 0; font-size: 20px; color: #4cc9f0; }
+  .card-content p { margin: 5px 0 0; font-size: 14px; color: #bbb; }
+  .highlight { background-color: #4cc9f0; color: #000; border-radius: 3px; }
+  #iframeContainer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #0f0f1a;
+    z-index: 999;
+    flex-direction: column;
+  }
+  #closeBtn {
+    display: inline-block;
+    margin: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    background: #1a1a2e;
+    padding: 8px 12px;
+    border-radius: 8px;
+    align-self: flex-end;
+  }
+  #closeBtn:hover { color: red; }
+  iframe { flex: 1; width: 100%; border: none; }
+  #noResults { text-align:center; color:#ff4d6d; margin-top:20px; display:none; font-size:18px;}
+  canvas#particles { position:fixed; top:0; left:0; z-index:0;}
+</style>
 </head>
 <body>
 
-  <canvas id="particles"></canvas>
+<canvas id="particles"></canvas>
 
-  <header>
-    <input type="text" id="search" placeholder="Buscar script...">
-  </header>
+<header>
+  <input type="text" id="search" placeholder="Buscar script...">
+</header>
 
-  <main id="mainContent">
-    <section id="cards" class="card-container">
-      <!-- Las tarjetas se generarán con JS -->
-    </section>
-    <div id="noResults">No se encontraron resultados</div>
-  </main>
+<main id="mainContent">
+  <section id="cards" class="card-container">
+    <!-- Tus tarjetas originales aquí -->
+    <div class="card" data-title="WeroHub" data-subtitle="Encuentra todos los scripts posibles en un solo script!">
+      <img src="Assets/WeroHub.png" alt="WeroHub">
+      <div class="card-content">
+        <h3>WeroHub</h3>
+        <p>Encuentra todos los scripts posibles en un solo script!</p>
+      </div>
+    </div>
+  </section>
+  <div id="noResults">No se encontraron resultados</div>
+</main>
 
-  <div id="iframeContainer">
-    <button id="closeBtn">✖ Cerrar</button>
-    <iframe id="weroHubFrame" src=""></iframe>
-  </div>
+<div id="iframeContainer">
+  <button id="closeBtn">✖ Cerrar</button>
+  <iframe id="weroHubFrame" src=""></iframe>
+</div>
 
-  <script>
-    // ===== TARJETAS =====
-    const tarjetas = [
-      {
-        title: "WeroHub",
-        subtitle: "Encuentra todos los scripts posibles en un solo script!",
-        image: "Assets/WeroHub.png",
-        html: "WeroHub.html",
-        hash: "menunm=1"
-      },
-      {
-        title: "ScriptDos",
-        subtitle: "Script test",
-        image: "Assets/image.png",
-        html: "Script.html",
-        hash: "menunm=2"
+<script>
+  const cardsSection = document.getElementById("cards");
+  const searchInput = document.getElementById("search");
+  const mainContent = document.getElementById("mainContent");
+  const iframeContainer = document.getElementById("iframeContainer");
+  const weroHubFrame = document.getElementById("weroHubFrame");
+  const closeBtn = document.getElementById("closeBtn");
+  const noResults = document.getElementById("noResults");
+
+  // ----------------------
+  // Función para crear tarjetas dinámicamente (comando simplificado)
+  function createTab({title, subtitle, image, html}) {
+    const index = cardsSection.children.length + 1;
+    const hash = `menumn=${index}`;
+
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.dataset.title = title;
+    div.dataset.subtitle = subtitle;
+    div.dataset.hash = hash;
+
+    div.innerHTML = `
+      <img src="${image}" alt="${title}">
+      <div class="card-content">
+        <h3>${title}</h3>
+        <p>${subtitle}</p>
+      </div>
+    `;
+
+    div.addEventListener("click", () => {
+      window.location.hash = hash;
+      weroHubFrame.src = html;
+      mainContent.style.display = "none";
+      iframeContainer.style.display = "flex";
+    });
+
+    cardsSection.appendChild(div);
+  }
+
+  // ----------------------
+  // Búsqueda dinámica
+  function updateSearch() {
+    const query = searchInput.value.toLowerCase();
+    let visible = 0;
+    document.querySelectorAll(".card").forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const subtitle = card.dataset.subtitle.toLowerCase();
+      if(title.includes(query) || subtitle.includes(query)) {
+        card.style.display = "flex"; visible++;
+        const titleElem = card.querySelector("h3");
+        const subtitleElem = card.querySelector("p");
+        titleElem.innerHTML = card.dataset.title.replace(
+          new RegExp(query,"gi"), match=>`<span class="highlight">${match}</span>`
+        );
+        subtitleElem.innerHTML = card.dataset.subtitle.replace(
+          new RegExp(query,"gi"), match=>`<span class="highlight">${match}</span>`
+        );
+      } else { card.style.display = "none"; }
+    });
+    noResults.style.display = visible===0 ? "block" : "none";
+  }
+  searchInput.addEventListener("input", updateSearch);
+
+  // ----------------------
+  // Cerrar iframe
+  closeBtn.addEventListener("click", () => {
+    iframeContainer.style.display = "none";
+    mainContent.style.display = "block";
+    weroHubFrame.src = "";
+    history.pushState("", document.title, window.location.pathname);
+  });
+
+  // Abrir tarjeta por hash
+  window.addEventListener("DOMContentLoaded", ()=>{
+    const hash = window.location.hash.substring(1);
+    document.querySelectorAll(".card").forEach(card=>{
+      if(card.dataset.hash===hash){
+        card.click();
       }
-    ];
-
-    const cardsSection = document.getElementById("cards");
-    const searchInput = document.getElementById("search");
-    const mainContent = document.getElementById("mainContent");
-    const iframeContainer = document.getElementById("iframeContainer");
-    const weroHubFrame = document.getElementById("weroHubFrame");
-    const closeBtn = document.getElementById("closeBtn");
-    const noResults = document.getElementById("noResults");
-
-    // Generar tarjetas dinámicamente
-    tarjetas.forEach(tab => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.dataset.title = tab.title;
-      card.dataset.subtitle = tab.subtitle;
-      card.dataset.html = tab.html;
-      card.dataset.hash = tab.hash;
-
-      card.innerHTML = `
-        <img src="${tab.image}" alt="${tab.title}">
-        <div class="card-content">
-          <h3>${tab.title}</h3>
-          <p>${tab.subtitle}</p>
-        </div>
-      `;
-
-      // Guardar título original para búsqueda
-      card.originalTitle = tab.title;
-      card.originalSubtitle = tab.subtitle;
-
-      cardsSection.appendChild(card);
     });
+  });
 
-    // Click en tarjeta
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        const htmlFile = card.dataset.html;
-        const hashValue = card.dataset.hash;
+  // ----------------------
+  // PARTICULAS
+  const canvas = document.getElementById("particles");
+  const ctx = canvas.getContext("2d");
+  let points = [], numPoints=80, maxDist=150;
 
-        if(htmlFile){
-          window.location.hash = hashValue;
-          weroHubFrame.src = htmlFile;
-          mainContent.style.display = "none";
-          iframeContainer.style.display = "flex";
+  function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight;}
+  window.addEventListener("resize",resizeCanvas); resizeCanvas();
+
+  function random(min,max){return Math.random()*(max-min)+min;}
+  for(let i=0;i<numPoints;i++){points.push({x:random(0,canvas.width), y:random(0,canvas.height), vx:random(-0.5,0.5), vy:random(-0.5,0.5)});}
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=0;i<points.length;i++){
+      const p1=points[i];
+      for(let j=i+1;j<points.length;j++){
+        const p2=points[j]; const dx=p1.x-p2.x; const dy=p1.y-p2.y; const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<maxDist){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(76,201,240,${1-dist/maxDist})`;
+          ctx.lineWidth=1; ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
         }
-      });
-    });
-
-    // Botón cerrar iframe
-    closeBtn.addEventListener("click", () => {
-      iframeContainer.style.display = "none";
-      mainContent.style.display = "block";
-      weroHubFrame.src = "";
-      history.pushState("", document.title, window.location.pathname);
-    });
-
-    // Detectar hash al cargar la página
-    window.addEventListener("DOMContentLoaded", () => {
-      const currentHash = window.location.hash.replace("#","");
-      const tab = tarjetas.find(t => t.hash === currentHash);
-      if(tab){
-        weroHubFrame.src = tab.html;
-        mainContent.style.display = "none";
-        iframeContainer.style.display = "flex";
       }
-    });
-
-    // ===== BUSQUEDA =====
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase();
-      let anyVisible = false;
-
-      cards.forEach(card => {
-        const title = card.originalTitle.toLowerCase();
-        const subtitle = card.originalSubtitle.toLowerCase();
-        const titleElement = card.querySelector("h3");
-        const subtitleElement = card.querySelector("p");
-
-        if(title.includes(query) || subtitle.includes(query)){
-          anyVisible = true;
-          if(query !== ""){
-            titleElement.innerHTML = card.originalTitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
-            subtitleElement.innerHTML = card.originalSubtitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
-          } else {
-            titleElement.textContent = card.originalTitle;
-            subtitleElement.textContent = card.originalSubtitle;
-          }
-          card.style.display = "flex";
-        } else {
-          card.style.display = "none";
-        }
-      });
-
-      noResults.style.display = anyVisible ? "none" : "block";
-    });
-
-    // ===== PARTICULAS =====
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const points = [];
-    const numPoints = 80; // ajustable
-    for(let i=0;i<numPoints;i++){
-      points.push({
-        x: Math.random()*width,
-        y: Math.random()*height,
-        vx: (Math.random()-0.5)*0.5,
-        vy: (Math.random()-0.5)*0.5,
-        r: 2
-      });
     }
-
-    function draw(){
-      ctx.clearRect(0,0,width,height);
-      for(let i=0;i<points.length;i++){
-        let p = points[i];
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle = "#4cc9f0";
-        ctx.fill();
-
-        // conectar con puntos cercanos
-        for(let j=i+1;j<points.length;j++){
-          let p2 = points[j];
-          let dx = p.x-p2.x;
-          let dy = p.y-p2.y;
-          let dist = Math.sqrt(dx*dx+dy*dy);
-          if(dist<150){
-            ctx.beginPath();
-            ctx.moveTo(p.x,p.y);
-            ctx.lineTo(p2.x,p2.y);
-            ctx.strokeStyle = "rgba(76,201,240,"+(1-dist/150)+")";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-
-        p.x += p.vx;
-        p.y += p.vy;
-        if(p.x<0 || p.x>width) p.vx*=-1;
-        if(p.y<0 || p.y>height) p.vy*=-1;
-      }
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-
-    window.addEventListener("resize", () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    points.forEach(p=>{ctx.beginPath(); ctx.fillStyle="#4cc9f0"; ctx.arc(p.x,p.y,3,0,Math.PI*2); ctx.fill(); p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>canvas.width)p.vx*=-1;
+      if(p.y<0||p.y>canvas.height)p.vy*=-1;
     });
-  </script>
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // ----------------------
+  // EJEMPLO de comando simplificado
+  // createTab({title:"ScriptDos", subtitle:"Script test", image:"Assets/image.png", html:"Script.html"});
+</script>
 
 </body>
 </html>
