@@ -32,7 +32,7 @@
 
   .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px;
     z-index:1;
@@ -67,6 +67,8 @@
     background:rgba(15,15,26,0.95);
     z-index:999;
     flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
   }
   #iframeContainer.show { display:flex; }
 
@@ -81,13 +83,13 @@
     padding: 10px 15px;
     border-radius:12px;
     transition: all 0.3s;
-    align-self: flex-start;
   }
   #closeBtn:hover { color:red; transform: scale(1.05); }
 
-  iframe { flex:1; width:100%; height:100%; border:none; }
+  iframe { flex:1; width:100%; height:100%; border:none; opacity:0; }
 
   @media screen and (max-width:768px) {
+    .card-container { grid-template-columns: 1fr; }
     .card { flex-direction: column; text-align:center; }
     .card img { width:80%; height:auto; }
   }
@@ -206,18 +208,25 @@
       card.originalSubtitle = card.dataset.subtitle;
       card.addEventListener("click", ()=>{
         const htmlFile = card.dataset.html;
-        // Cargar en iframe en la misma página
+        // Fade-in del iframe
+        weroHubFrame.style.transition = "opacity 0.5s";
+        weroHubFrame.style.opacity = 0;
         weroHubFrame.src = `https://lilwero20.github.io/Web/${htmlFile}`;
         mainContent.style.display = "none";
         iframeContainer.classList.add("show");
+        setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
       });
     });
   }
 
   closeBtn.addEventListener("click", ()=>{
-    iframeContainer.classList.remove("show");
-    mainContent.style.display = "block";
-    weroHubFrame.src = "";
+    // Fade-out del iframe
+    weroHubFrame.style.opacity = 0;
+    setTimeout(()=>{
+      iframeContainer.classList.remove("show");
+      mainContent.style.display = "block";
+      weroHubFrame.src = "";
+    }, 500);
   });
 
   searchInput.addEventListener("input", ()=>{
@@ -255,16 +264,19 @@
     div.originalTitle = title;
     div.originalSubtitle = subtitle;
     div.addEventListener("click", ()=>{
+      weroHubFrame.style.transition = "opacity 0.5s";
+      weroHubFrame.style.opacity = 0;
       weroHubFrame.src = `https://lilwero20.github.io/Web/${html}`;
       mainContent.style.display = "none";
       iframeContainer.classList.add("show");
+      setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
     });
     cardsContainer.appendChild(div);
   }
 
   initCards();
 
-  // EJEMPLO de creación de tarjeta nueva
+  // EJEMPLO de creación de tarjetas nuevas
   createTab({
     title: "99 Days In The Forest",
     subtitle: "AutoFarm Diamonds",
@@ -272,14 +284,27 @@
     html: "99days.html"
   });
 
-    createTab({
+  createTab({
     title: "Steal a Brainrot Chili Hub",
     subtitle: "Cool Steal Helpers, Super Speed",
     image: "Assets/chili.png",
     html: "chili.html"
   });
 
+  createTab({
+    title: "Script En Desarrollo",
+    subtitle: "Descripción adicional",
+    image: "Assets/extra.png",
+    html: "extra.html"
+  });
+
+  createTab({
+    title: "Desarrollo",
+    subtitle: "Descripción otro script",
+    image: "Assets/otro.png",
+    html: "otro.html"
+  });
+  
 </script>
 </body>
 </html>
-
