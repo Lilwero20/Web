@@ -11,71 +11,49 @@
       background: #0f0f1a;
       color: #fff;
       overflow-x: hidden;
-      position: relative;
     }
-    canvas#particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
     header {
       padding: 15px;
       text-align: center;
-      background: rgba(26,26,46,0.85);
-      backdrop-filter: blur(5px);
+      background: #1a1a2e;
       position: relative;
-      z-index: 2;
+      z-index: 10;
     }
     header input {
-      width: 90%;
-      max-width: 500px;
-      padding: 10px;
-      border-radius: 12px;
+      width: 60%;
+      padding: 8px;
+      border-radius: 8px;
       border: none;
       outline: none;
       font-size: 16px;
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      transition: background 0.3s;
     }
-    header input:focus {
-      background: rgba(76,201,240,0.2);
-    }
-
     .card-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       padding: 20px;
-      z-index: 1;
       position: relative;
+      z-index: 1;
     }
     .card {
       display: flex;
       align-items: center;
-      background: rgba(31,31,47,0.95);
-      border-radius: 16px;
-      box-shadow: 0 0 15px rgba(76,201,240,0.4);
+      background: rgba(31,31,47,0.9);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
       cursor: pointer;
       overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 2px solid rgba(76,201,240,0.2);
-      flex-direction: row;
-      padding: 5px;
+      transition: transform 0.2s, background 0.2s;
+      backdrop-filter: blur(5px);
     }
     .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(76,201,240,0.7);
+      transform: scale(1.03);
+      background: rgba(31,31,47,1);
     }
     .card img {
       width: 120px;
-      height: 100px;
+      height: 100%;
       object-fit: cover;
-      border-radius: 12px;
-      margin: 10px;
-      flex-shrink: 0;
     }
     .card-content {
       padding: 15px;
@@ -84,78 +62,56 @@
       margin: 0;
       font-size: 20px;
       color: #4cc9f0;
-      text-shadow: 0 0 10px rgba(76,201,240,0.8);
     }
     .card-content p {
       margin: 5px 0 0;
       font-size: 14px;
       color: #bbb;
     }
-
-    #noResults {
-      text-align: center;
-      font-size: 18px;
-      color: #f72585;
-      margin-top: 20px;
-      display: none;
-    }
-
     #iframeContainer {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(15,15,26,0.95);
+      background: #0f0f1a;
       z-index: 999;
       flex-direction: column;
-      transition: opacity 0.5s ease;
-    }
-    #iframeContainer.show {
-      display: flex;
-      opacity: 1;
     }
     #closeBtn {
       display: inline-block;
-      margin: 15px;
+      margin: 10px;
       font-size: 20px;
       font-weight: bold;
       color: #fff;
       cursor: pointer;
-      background: rgba(26,26,46,0.85);
-      padding: 10px 15px;
-      border-radius: 12px;
-      transition: all 0.3s;
+      background: #1a1a2e;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
     }
     #closeBtn:hover {
       color: red;
-      transform: scale(1.05);
     }
     iframe {
       flex: 1;
       width: 100%;
-      height: 100%;
       border: none;
     }
-
-    @media screen and (max-width: 768px) {
-      .card { flex-direction: column; text-align: center; }
-      .card img { width: 80%; height: auto; }
+    #noResults {
+      color: #ff6b6b;
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      display: none;
     }
-    @media screen and (max-width: 480px) {
-      header input { width: 95%; }
-      .card img { width: 100%; }
-      .card-content h3 { font-size: 18px; }
-      .card-content p { font-size: 12px; }
+    canvas#particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
-
-    mark {
-      background-color: rgba(76,201,240,0.5);
-      color: #fff;
-      border-radius: 4px;
-      padding: 0 2px;
-    }
-
   </style>
 </head>
 <body>
@@ -168,132 +124,99 @@
 
   <main id="mainContent">
     <section id="cards" class="card-container">
-      <div class="card" data-title="WeroHub" data-subtitle="Encuentra todos los scripts posibles en un solo script!">
-        <img src="Assets/WeroHub.png" alt="WeroHub">
-        <div class="card-content">
-          <h3>WeroHub</h3>
-          <p>Encuentra todos los scripts posibles en un solo script!</p>
-        </div>
-      </div>
+      <!-- Las tarjetas se generarán con JS -->
     </section>
     <div id="noResults">No se encontraron resultados</div>
   </main>
 
   <div id="iframeContainer">
-    <button id="closeBtn">✖ Cerrar WeroHub</button>
+    <button id="closeBtn">✖ Cerrar</button>
     <iframe id="weroHubFrame" src=""></iframe>
   </div>
 
   <script>
-    // ===== PARTICULAS =====
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-
-    window.addEventListener("resize", () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    });
-
-    const particlesArray = [];
-    const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
-    const particleCount = 100;
-    const maxDistance = 130;
-
-    class Particle {
-      constructor(){
-        this.x = Math.random()*w;
-        this.y = Math.random()*h;
-        this.radius = Math.random()*2+1.5;
-        this.color = colors[Math.floor(Math.random()*colors.length)];
-        this.speedX = (Math.random()-0.5)*0.6;
-        this.speedY = (Math.random()-0.5)*0.6;
+    // ===== TARJETAS =====
+    const tarjetas = [
+      {
+        title: "WeroHub",
+        subtitle: "Encuentra todos los scripts posibles en un solo script!",
+        image: "Assets/WeroHub.png",
+        html: "WeroHub.html",
+        hash: "menunm=1"
+      },
+      {
+        title: "ScriptDos",
+        subtitle: "Script test",
+        image: "Assets/image.png",
+        html: "Script.html",
+        hash: "menunm=2"
       }
-      update(){
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if(this.x < 0 || this.x > w) this.speedX *= -1;
-        if(this.y < 0 || this.y > h) this.speedY *= -1;
-      }
-      draw(){
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
-    }
+    ];
 
-    for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
-
-    function connectParticles(){
-      for(let a=0;a<particlesArray.length;a++){
-        for(let b=a+1;b<particlesArray.length;b++){
-          let dx = particlesArray[a].x - particlesArray[b].x;
-          let dy = particlesArray[a].y - particlesArray[b].y;
-          let distance = Math.sqrt(dx*dx + dy*dy);
-          if(distance < maxDistance){
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(76,201,240,"+(1-distance/maxDistance)+")";
-            ctx.lineWidth = 1;
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        }
-      }
-    }
-
-    function animateParticles(){
-      ctx.clearRect(0,0,w,h);
-      particlesArray.forEach(p=>{
-        p.update();
-        p.draw();
-      });
-      connectParticles();
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-
-    // ===== TARJETAS & IFRAME =====
-    const cards = document.querySelectorAll(".card");
+    const cardsSection = document.getElementById("cards");
+    const searchInput = document.getElementById("search");
     const mainContent = document.getElementById("mainContent");
     const iframeContainer = document.getElementById("iframeContainer");
     const weroHubFrame = document.getElementById("weroHubFrame");
     const closeBtn = document.getElementById("closeBtn");
-    const searchInput = document.getElementById("search");
     const noResults = document.getElementById("noResults");
 
-    // Guardar texto original
-    cards.forEach(card => {
-      card.originalTitle = card.dataset.title;
-      card.originalSubtitle = card.dataset.subtitle;
+    // Generar tarjetas dinámicamente
+    tarjetas.forEach(tab => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.dataset.title = tab.title;
+      card.dataset.subtitle = tab.subtitle;
+      card.dataset.html = tab.html;
+      card.dataset.hash = tab.hash;
+
+      card.innerHTML = `
+        <img src="${tab.image}" alt="${tab.title}">
+        <div class="card-content">
+          <h3>${tab.title}</h3>
+          <p>${tab.subtitle}</p>
+        </div>
+      `;
+
+      // Guardar título original para búsqueda
+      card.originalTitle = tab.title;
+      card.originalSubtitle = tab.subtitle;
+
+      cardsSection.appendChild(card);
     });
 
+    // Click en tarjeta
+    const cards = document.querySelectorAll(".card");
     cards.forEach(card => {
       card.addEventListener("click", () => {
-        if(card.dataset.title === "WeroHub"){
-          window.location.hash = "menunm=1";
-          weroHubFrame.src = "WeroHub.html";
+        const htmlFile = card.dataset.html;
+        const hashValue = card.dataset.hash;
+
+        if(htmlFile){
+          window.location.hash = hashValue;
+          weroHubFrame.src = htmlFile;
           mainContent.style.display = "none";
-          iframeContainer.classList.add("show");
+          iframeContainer.style.display = "flex";
         }
       });
     });
 
+    // Botón cerrar iframe
     closeBtn.addEventListener("click", () => {
-      iframeContainer.classList.remove("show");
+      iframeContainer.style.display = "none";
       mainContent.style.display = "block";
       weroHubFrame.src = "";
       history.pushState("", document.title, window.location.pathname);
     });
 
+    // Detectar hash al cargar la página
     window.addEventListener("DOMContentLoaded", () => {
-      if(window.location.hash.includes("menunm=1")){
-        weroHubFrame.src = "WeroHub.html";
+      const currentHash = window.location.hash.replace("#","");
+      const tab = tarjetas.find(t => t.hash === currentHash);
+      if(tab){
+        weroHubFrame.src = tab.html;
         mainContent.style.display = "none";
-        iframeContainer.classList.add("show");
+        iframeContainer.style.display = "flex";
       }
     });
 
@@ -310,7 +233,6 @@
 
         if(title.includes(query) || subtitle.includes(query)){
           anyVisible = true;
-
           if(query !== ""){
             titleElement.innerHTML = card.originalTitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
             subtitleElement.innerHTML = card.originalSubtitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
@@ -327,10 +249,64 @@
       noResults.style.display = anyVisible ? "none" : "block";
     });
 
+    // ===== PARTICULAS =====
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const points = [];
+    const numPoints = 80; // ajustable
+    for(let i=0;i<numPoints;i++){
+      points.push({
+        x: Math.random()*width,
+        y: Math.random()*height,
+        vx: (Math.random()-0.5)*0.5,
+        vy: (Math.random()-0.5)*0.5,
+        r: 2
+      });
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,width,height);
+      for(let i=0;i<points.length;i++){
+        let p = points[i];
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = "#4cc9f0";
+        ctx.fill();
+
+        // conectar con puntos cercanos
+        for(let j=i+1;j<points.length;j++){
+          let p2 = points[j];
+          let dx = p.x-p2.x;
+          let dy = p.y-p2.y;
+          let dist = Math.sqrt(dx*dx+dy*dy);
+          if(dist<150){
+            ctx.beginPath();
+            ctx.moveTo(p.x,p.y);
+            ctx.lineTo(p2.x,p2.y);
+            ctx.strokeStyle = "rgba(76,201,240,"+(1-dist/150)+")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if(p.x<0 || p.x>width) p.vx*=-1;
+        if(p.y<0 || p.y>height) p.vy*=-1;
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
   </script>
 
 </body>
 </html>
-
-</html>
-
