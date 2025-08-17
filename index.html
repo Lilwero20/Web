@@ -149,7 +149,6 @@
       .card-content p { font-size: 12px; }
     }
 
-    /* Estilo para resaltar coincidencias */
     mark {
       background-color: rgba(76,201,240,0.5);
       color: #fff;
@@ -199,7 +198,7 @@
 
     const particlesArray = [];
     const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
-    const particleCount = 100; // densidad moderada
+    const particleCount = 100;
     const maxDistance = 130;
 
     class Particle {
@@ -266,50 +265,59 @@
     const searchInput = document.getElementById("search");
     const noResults = document.getElementById("noResults");
 
+    // Guardar texto original
+    cards.forEach(card => {
+      card.originalTitle = card.dataset.title;
+      card.originalSubtitle = card.dataset.subtitle;
+    });
+
     cards.forEach(card => {
       card.addEventListener("click", () => {
-        if(card.dataset.title === "WeroHub") {
+        if(card.dataset.title === "WeroHub"){
           window.location.hash = "menunm=1";
           weroHubFrame.src = "WeroHub.html";
           mainContent.style.display = "none";
-          iframeContainer.style.display = "flex";
+          iframeContainer.classList.add("show");
         }
       });
     });
 
     closeBtn.addEventListener("click", () => {
-      iframeContainer.style.display = "none";
+      iframeContainer.classList.remove("show");
       mainContent.style.display = "block";
       weroHubFrame.src = "";
       history.pushState("", document.title, window.location.pathname);
     });
 
     window.addEventListener("DOMContentLoaded", () => {
-      if(window.location.hash.includes("menunm=1")) {
+      if(window.location.hash.includes("menunm=1")){
         weroHubFrame.src = "WeroHub.html";
         mainContent.style.display = "none";
-        iframeContainer.style.display = "flex";
+        iframeContainer.classList.add("show");
       }
     });
 
-    // ===== BUSQUEDA EN TARGETAS =====
+    // ===== BUSQUEDA =====
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.toLowerCase();
       let anyVisible = false;
+
       cards.forEach(card => {
-        const title = card.dataset.title.toLowerCase();
-        const subtitle = card.dataset.subtitle.toLowerCase();
+        const title = card.originalTitle.toLowerCase();
+        const subtitle = card.originalSubtitle.toLowerCase();
+        const titleElement = card.querySelector("h3");
+        const subtitleElement = card.querySelector("p");
 
         if(title.includes(query) || subtitle.includes(query)){
           anyVisible = true;
 
-          // Resaltar coincidencias
-          const titleElement = card.querySelector("h3");
-          const subtitleElement = card.querySelector("p");
-
-          titleElement.innerHTML = card.dataset.title.replace(new RegExp(query, "gi"), match => `<mark>${match}</mark>`);
-          subtitleElement.innerHTML = card.dataset.subtitle.replace(new RegExp(query, "gi"), match => `<mark>${match}</mark>`);
-
+          if(query !== ""){
+            titleElement.innerHTML = card.originalTitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
+            subtitleElement.innerHTML = card.originalSubtitle.replace(new RegExp(query,"gi"), m=>`<mark>${m}</mark>`);
+          } else {
+            titleElement.textContent = card.originalTitle;
+            subtitleElement.textContent = card.originalSubtitle;
+          }
           card.style.display = "flex";
         } else {
           card.style.display = "none";
@@ -320,5 +328,9 @@
     });
 
   </script>
+
 </body>
 </html>
+
+</html>
+
