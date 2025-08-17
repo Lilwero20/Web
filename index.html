@@ -63,6 +63,7 @@
       transition: transform 0.3s, box-shadow 0.3s;
       border: 2px solid rgba(76,201,240,0.2);
       flex-direction: row;
+      padding: 5px;
     }
     .card:hover {
       transform: scale(1.05);
@@ -147,6 +148,15 @@
       .card-content h3 { font-size: 18px; }
       .card-content p { font-size: 12px; }
     }
+
+    /* Estilo para resaltar coincidencias */
+    mark {
+      background-color: rgba(76,201,240,0.5);
+      color: #fff;
+      border-radius: 4px;
+      padding: 0 2px;
+    }
+
   </style>
 </head>
 <body>
@@ -176,96 +186,139 @@
   </div>
 
   <script>
-    // ===== PARTICULAS CON LINEAS MEJORADAS =====
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-let w = canvas.width = window.innerWidth;
-let h = canvas.height = window.innerHeight;
+    // ===== PARTICULAS =====
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
 
-window.addEventListener("resize", () => {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-});
+    window.addEventListener("resize", () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
 
-const particlesArray = [];
-const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
-const particleCount = 120; // Más partículas
-const maxDistance = 150;   // Mayor distancia de conexión
+    const particlesArray = [];
+    const colors = ["#4cc9f0", "#4895ef", "#7209b7", "#f72585"];
+    const particleCount = 100; // densidad moderada
+    const maxDistance = 130;
 
-class Particle {
-  constructor(){
-    this.x = Math.random()*w;
-    this.y = Math.random()*h;
-    this.radius = Math.random()*2+1.5;
-    this.color = colors[Math.floor(Math.random()*colors.length)];
-    this.speedX = (Math.random()-0.5)*0.7;
-    this.speedY = (Math.random()-0.5)*0.7;
-  }
-  update(){
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if(this.x < 0 || this.x > w) this.speedX *= -1;
-    if(this.y < 0 || this.y > h) this.speedY *= -1;
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-}
-
-for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
-
-function connectParticles(){
-  for(let a=0;a<particlesArray.length;a++){
-    for(let b=a+1;b<particlesArray.length;b++){
-      let dx = particlesArray[a].x - particlesArray[b].x;
-      let dy = particlesArray[a].y - particlesArray[b].y;
-      let distance = Math.sqrt(dx*dx + dy*dy);
-      if(distance < maxDistance){
+    class Particle {
+      constructor(){
+        this.x = Math.random()*w;
+        this.y = Math.random()*h;
+        this.radius = Math.random()*2+1.5;
+        this.color = colors[Math.floor(Math.random()*colors.length)];
+        this.speedX = (Math.random()-0.5)*0.6;
+        this.speedY = (Math.random()-0.5)*0.6;
+      }
+      update(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if(this.x < 0 || this.x > w) this.speedX *= -1;
+        if(this.y < 0 || this.y > h) this.speedY *= -1;
+      }
+      draw(){
         ctx.beginPath();
-        ctx.strokeStyle = "rgba(76,201,240,"+(1-distance/maxDistance)+")";
-        ctx.lineWidth = 1;
-        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-        ctx.stroke();
-        ctx.closePath();
+        ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
       }
     }
-  }
-}
 
-function animateParticles(){
-  ctx.clearRect(0,0,w,h);
-  particlesArray.forEach(p=>{
-    p.update();
-    p.draw();
-  });
-  connectParticles();
-  requestAnimationFrame(animateParticles);
-}
+    for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
 
-animateParticles();
+    function connectParticles(){
+      for(let a=0;a<particlesArray.length;a++){
+        for(let b=a+1;b<particlesArray.length;b++){
+          let dx = particlesArray[a].x - particlesArray[b].x;
+          let dy = particlesArray[a].y - particlesArray[b].y;
+          let distance = Math.sqrt(dx*dx + dy*dy);
+          if(distance < maxDistance){
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(76,201,240,"+(1-distance/maxDistance)+")";
+            ctx.lineWidth = 1;
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+      }
+    }
 
-    // ===== BÚSQUEDA EN TIEMPO REAL =====
+    function animateParticles(){
+      ctx.clearRect(0,0,w,h);
+      particlesArray.forEach(p=>{
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ===== TARJETAS & IFRAME =====
+    const cards = document.querySelectorAll(".card");
+    const mainContent = document.getElementById("mainContent");
+    const iframeContainer = document.getElementById("iframeContainer");
+    const weroHubFrame = document.getElementById("weroHubFrame");
+    const closeBtn = document.getElementById("closeBtn");
+    const searchInput = document.getElementById("search");
+    const noResults = document.getElementById("noResults");
+
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        if(card.dataset.title === "WeroHub") {
+          window.location.hash = "menunm=1";
+          weroHubFrame.src = "WeroHub.html";
+          mainContent.style.display = "none";
+          iframeContainer.style.display = "flex";
+        }
+      });
+    });
+
+    closeBtn.addEventListener("click", () => {
+      iframeContainer.style.display = "none";
+      mainContent.style.display = "block";
+      weroHubFrame.src = "";
+      history.pushState("", document.title, window.location.pathname);
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if(window.location.hash.includes("menunm=1")) {
+        weroHubFrame.src = "WeroHub.html";
+        mainContent.style.display = "none";
+        iframeContainer.style.display = "flex";
+      }
+    });
+
+    // ===== BUSQUEDA EN TARGETAS =====
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.toLowerCase();
       let anyVisible = false;
       cards.forEach(card => {
         const title = card.dataset.title.toLowerCase();
         const subtitle = card.dataset.subtitle.toLowerCase();
+
         if(title.includes(query) || subtitle.includes(query)){
-          card.style.display = "flex";
           anyVisible = true;
+
+          // Resaltar coincidencias
+          const titleElement = card.querySelector("h3");
+          const subtitleElement = card.querySelector("p");
+
+          titleElement.innerHTML = card.dataset.title.replace(new RegExp(query, "gi"), match => `<mark>${match}</mark>`);
+          subtitleElement.innerHTML = card.dataset.subtitle.replace(new RegExp(query, "gi"), match => `<mark>${match}</mark>`);
+
+          card.style.display = "flex";
         } else {
           card.style.display = "none";
         }
       });
+
       noResults.style.display = anyVisible ? "none" : "block";
     });
-  </script>
 
+  </script>
 </body>
 </html>
-
