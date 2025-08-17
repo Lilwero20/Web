@@ -202,30 +202,38 @@
   const weroHubFrame = document.getElementById("weroHubFrame");
   const closeBtn = document.getElementById("closeBtn");
 
+  function openCard(cardId, htmlFile){
+    // Abrir iframe
+    weroHubFrame.style.transition = "opacity 0.5s";
+    weroHubFrame.style.opacity = 0;
+    weroHubFrame.src = `https://lilwero20.github.io/Web/${htmlFile}`;
+    mainContent.style.display = "none";
+    iframeContainer.classList.add("show");
+    setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
+
+    // Guardar en hash
+    window.location.hash = `menuNum=${cardId}`;
+  }
+
   function initCards(){
-    document.querySelectorAll(".card").forEach(card=>{
+    document.querySelectorAll(".card").forEach((card, index)=>{
+      const cardId = index + 1;
+      card.setAttribute("data-id", cardId);
       card.originalTitle = card.dataset.title;
       card.originalSubtitle = card.dataset.subtitle;
       card.addEventListener("click", ()=>{
-        const htmlFile = card.dataset.html;
-        // Fade-in del iframe
-        weroHubFrame.style.transition = "opacity 0.5s";
-        weroHubFrame.style.opacity = 0;
-        weroHubFrame.src = `https://lilwero20.github.io/Web/${htmlFile}`;
-        mainContent.style.display = "none";
-        iframeContainer.classList.add("show");
-        setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
+        openCard(cardId, card.dataset.html);
       });
     });
   }
 
   closeBtn.addEventListener("click", ()=>{
-    // Fade-out del iframe
     weroHubFrame.style.opacity = 0;
     setTimeout(()=>{
       iframeContainer.classList.remove("show");
       mainContent.style.display = "block";
       weroHubFrame.src = "";
+      window.location.hash = ""; // limpiar hash
     }, 500);
   });
 
@@ -263,21 +271,24 @@
     div.innerHTML = `<img src="${image}" alt="${title}"><div class="card-content"><h3>${title}</h3><p>${subtitle}</p></div>`;
     div.originalTitle = title;
     div.originalSubtitle = subtitle;
-    div.addEventListener("click", ()=>{
-      weroHubFrame.style.transition = "opacity 0.5s";
-      weroHubFrame.style.opacity = 0;
-      weroHubFrame.src = `https://lilwero20.github.io/Web/${html}`;
-      mainContent.style.display = "none";
-      iframeContainer.classList.add("show");
-      setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
-    });
     cardsContainer.appendChild(div);
+    initCards(); // re-inicializar con el nuevo cardId
   }
 
   initCards();
 
-  // EJEMPLO de creación de tarjetas nuevas
+  // Abrir automáticamente si hay hash en la URL
+  window.addEventListener("load", ()=>{
+    if(window.location.hash.startsWith("#menuNum=")){
+      const num = parseInt(window.location.hash.split("=")[1]);
+      const targetCard = document.querySelector(`.card[data-id="${num}"]`);
+      if(targetCard){
+        openCard(num, targetCard.dataset.html);
+      }
+    }
+  });
 
+  // EJEMPLO de creación de tarjetas nuevas
   createTab({
     title: "Steal a Brainrot Ajjans Hub",
     subtitle: "Instan Steal, Auto Steal, Super Speed, Keyless",
@@ -305,10 +316,4 @@
     image: "Assets/otro.png",
     html: "otro.html"
   });
-  
 </script>
-</body>
-</html>
-
-
-
