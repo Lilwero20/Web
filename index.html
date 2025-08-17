@@ -61,23 +61,34 @@
       font-size: 14px;
       color: #bbb;
     }
-    #content {
+    #iframeContainer {
       display: none;
-      padding: 0;
-      position: relative;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f0f1a;
+      z-index: 999;
+      flex-direction: column;
     }
     #closeBtn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
+      display: inline-block;
+      margin: 10px;
+      font-size: 20px;
       font-weight: bold;
       color: #fff;
       cursor: pointer;
-      z-index: 999;
+      background: #1a1a2e;
+      padding: 8px 12px;
+      border-radius: 8px;
     }
     #closeBtn:hover {
       color: red;
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
     }
   </style>
 </head>
@@ -87,10 +98,9 @@
     <input type="text" id="search" placeholder="Buscar script...">
   </header>
 
-  <main>
+  <main id="mainContent">
     <!-- Menú de tarjetas -->
     <section id="cards" class="card-container">
-      <!-- Tarjeta de WeroHub -->
       <div class="card" data-title="WeroHub" data-subtitle="Encuentra todos los scripts posibles en un solo script!">
         <img src="https://i.ibb.co/Yh9wjpM/code.jpg" alt="WeroHub">
         <div class="card-content">
@@ -99,73 +109,50 @@
         </div>
       </div>
     </section>
-
-    <!-- Contenido dinámico -->
-    <section id="content">
-      <span id="closeBtn">✖</span>
-      <div id="contentInner"></div>
-    </section>
   </main>
 
+  <!-- Contenedor del iframe -->
+  <div id="iframeContainer">
+    <button id="closeBtn">✖ Cerrar WeroHub</button>
+    <iframe id="weroHubFrame" src=""></iframe>
+  </div>
+
   <script>
-    const searchInput = document.getElementById("search");
     const cards = document.querySelectorAll(".card");
-    const cardsSection = document.getElementById("cards");
-    const contentSection = document.getElementById("content");
-    const contentInner = document.getElementById("contentInner");
+    const mainContent = document.getElementById("mainContent");
+    const iframeContainer = document.getElementById("iframeContainer");
+    const weroHubFrame = document.getElementById("weroHubFrame");
     const closeBtn = document.getElementById("closeBtn");
 
-    // Buscar tarjetas
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase();
-      cards.forEach(card => {
-        const title = card.dataset.title.toLowerCase();
-        const subtitle = card.dataset.subtitle.toLowerCase();
-        card.style.display = (title.includes(query) || subtitle.includes(query)) ? "flex" : "none";
+    // Click en tarjeta
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        if(card.dataset.title === "WeroHub") {
+          // Cambiar hash
+          window.location.hash = "menunm=1";
+          // Mostrar iframe con WeroHub.html
+          weroHubFrame.src = "WeroHub.html";
+          mainContent.style.display = "none";
+          iframeContainer.style.display = "flex";
+        }
       });
+    });
+
+    // Botón cerrar iframe
+    closeBtn.addEventListener("click", () => {
+      iframeContainer.style.display = "none";
+      mainContent.style.display = "block";
+      weroHubFrame.src = ""; // Limpiar iframe
+      history.pushState("", document.title, window.location.pathname); // Limpiar hash
     });
 
     // Detectar hash al cargar la página
     window.addEventListener("DOMContentLoaded", () => {
       if(window.location.hash.includes("menunm=1")) {
-        // Limpiar contenido actual y cargar WeroHub.html
-        fetch("WeroHub.html")
-          .then(res => res.text())
-          .then(data => {
-            document.body.innerHTML = data;
-          })
-          .catch(err => {
-            console.error("Error al cargar WeroHub:", err);
-            document.body.innerHTML = "<p>Error al cargar WeroHub.</p>";
-          });
+        weroHubFrame.src = "WeroHub.html";
+        mainContent.style.display = "none";
+        iframeContainer.style.display = "flex";
       }
-    });
-
-    // Abrir tarjeta
-    cards.forEach(card => {
-      card.addEventListener("click", () => {
-        const title = card.dataset.title;
-
-        if (title === "WeroHub") {
-          // Cambiar hash en la URL para indicar que se debe cargar WeroHub
-          window.location.hash = "menunm=1";
-          // Recargar la página para que se ejecute el fetch y cargue el HTML
-          window.location.reload();
-          return;
-        }
-
-        // Para otras tarjetas
-        contentInner.innerHTML = "<p>Contenido no disponible.</p>";
-        cardsSection.style.display = "none";
-        contentSection.style.display = "block";
-      });
-    });
-
-    // Botón cerrar
-    closeBtn.addEventListener("click", () => {
-      contentSection.style.display = "none";
-      cardsSection.style.display = "grid";
-      contentInner.innerHTML = "";
     });
   </script>
 
