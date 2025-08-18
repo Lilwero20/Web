@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeroScripts - Steal a Brainrot Script</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="Assets/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="Assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Assets/favicon-16x16.png">
+    <link rel="manifest" href="Assets/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --secondary-dark: #d97706;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --deep-purple: #5b21b6;
+            --deep-purple-dark: #4c1d95;
+            --green: #10b981;
+            --green-dark: #059669;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Fondo de partículas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: transparent;
+        }
+        
+        /* Header moderno */
+        .header {
+            width: 100%;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+        
+        /* Contenedor principal */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Tarjeta moderna */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: rotate 20s linear infinite;
+        }
+        
+        /* Títulos */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(to right, #f59e0b, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--light);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .by {
+            color: var(--gray);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .by a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .by a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .by a:hover {
+            color: var(--secondary);
+        }
+        
+        .by a:hover::after {
+            width: 100%;
+        }
+        
+        /* Sección de video */
+        .video-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .video-text {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Botones modernos */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .btn {
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            z-index: 1;
+            transform: translateY(0);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn.orange {
+            background: linear-gradient(45deg, var(--secondary), var(--secondary-dark));
+        }
+        
+        .btn.purple {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        }
+        
+        .btn.blue {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+        }
+        
+        .btn.purple-light {
+            background: linear-gradient(45deg, #a855f7, #7e22ce);
+            animation: pulse 2s infinite;
+        }
+        
+        .btn.deep-purple {
+            background: linear-gradient(45deg, var(--deep-purple), var(--deep-purple-dark));
+        }
+        
+        .btn.green {
+            background: linear-gradient(45deg, var(--green), var(--green-dark));
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+            50% { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4); }
+            100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        }
+        
+        /* Pasos */
+        .steps-container {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+        
+        .steps-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        
+        .steps-list li {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 3rem;
+            counter-increment: step-counter;
+        }
+        
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        /* Redes sociales */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 0.5rem;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Animaciones */
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Efecto flotante */
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-container {
+                padding: 1.5rem;
+            }
+            
+            .steps-list li {
+                padding-left: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div id="particles-js"></div>
+    
+    <div class="header">
+        <div class="main-container">
+            <h1 class="animate__animated animate__fadeInDown">WeroScripts</h1>
+            <p class="subtitle animate__animated animate__fadeIn">WeroScripts - Steal a Brainrot Script.</p>
+            <div class="by animate__animated animate__fadeIn">
+                by <a href="https://www.youtube.com/@WeroScripts" target="_blank">WeroScripts</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <!-- Tarjeta de video -->
+        <div class="card animate__animated animate__fadeIn">
+            <div class="video-section">
+                <div id="random-video-text" class="video-text">Mira un video random de mi canal:</div>
+                <div class="video-container">
+                    <iframe width="100%" height="400" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta de botones -->
+        <div class="card animate__animated animate__fadeIn">
+            <h2>Obtén tus scripts</h2>
+            <p class="subtitle">Selecciona el método que prefieras para conseguir tus scripts</p>
+            
+            <div class="button-grid">
+                <a href="https://rkns.link/f6kfo" class="btn orange animate__animated animate__fadeInLeft" target="_blank">
+                    <i class="fas fa-code"></i> Get Script (Linkvertise)
+                </a>
+              
+                <a href="https://rkns.link/ym9l1" class="btn blue animate__animated animate__fadeInLeft" target="_blank">
+                    <i class="fas fa-download"></i> Consigue Delta
+                </a>
+                
+                <a href="https://rkns.link/e17vb" class="btn purple-light animate__animated animate__fadeInRight" target="_blank">
+                    <i class="fas fa-rocket"></i> Consigue KRNL
+                </a>
+                
+                <a href="https://rkns.link/3sssd" class="btn deep-purple animate__animated animate__fadeIn" target="_blank">
+                    <i class="fas fa-star"></i> Consigue Solara
+                </a>
+                
+                <!-- Nuevo botón Multi Roblox -->
+                <a href="https://link-target.net/1371356/9fzgDrIXN8To" class="btn green animate__animated animate__fadeIn" target="_blank">
+                    <i class="fas fa-gamepad"></i> Multi Roblox
+                </a>
+
+                <a href="https://paypal.me/WeroScripts" class="btn deep-purple animate__animated animate__fadeIn" target="_blank">
+                    <i class="fas fa-star"></i> Apoya mi trabajo (Opcional, PayPal)
+                </a>
+            </div>
+        </div>
+        
+        <!-- Tarjeta de instrucciones -->
+        <div class="card animate__animated animate__fadeIn">
+            <div class="steps-container">
+                <h2>Cómo conseguir tu script</h2>
+                <ol class="steps-list">
+                    <li>Selecciona uno de los métodos disponibles arriba.</li>
+                    <li>Completa las tareas requeridas en la página de destino.</li>
+                    <li>Sigue cuidadosamente las instrucciones del tutorial.</li>
+                    <li>¡Disfruta de tu script! Únete al Discord si necesitas ayuda.</li>
+                </ol>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://discord.gg/EmsvzWF3xK" class="social-link animate__animated animate__fadeIn" target="_blank">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+                <a href="https://www.youtube.com/@WeroScripts" class="social-link animate__animated animate__fadeIn" target="_blank">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inicializar partículas
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 80,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#6366f1"
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                            "polygon": {
+                                "nb_sides": 5
+                            }
+                        },
+                        "opacity": {
+                            "value": 0.5,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 1,
+                                "opacity_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 3,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 2,
+                                "size_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#6366f1",
+                            "opacity": 0.4,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 1,
+                            "direction": "none",
+                            "random": true,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": true,
+                                "rotateX": 600,
+                                "rotateY": 1200
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 140,
+                                "line_linked": {
+                                    "opacity": 1
+                                }
+                            },
+                            "bubble": {
+                                "distance": 400,
+                                "size": 40,
+                                "duration": 2,
+                                "opacity": 8,
+                                "speed": 3
+                            },
+                            "repulse": {
+                                "distance": 200,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                            "remove": {
+                                "particles_nb": 2
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+            
+            // Cargar video aleatorio
+            const channelId = "UCpQw2pQnXlQkYvNULmKM2Vw";
+            const videos = [
+                "ucr4_9SArXM",
+                "ucr4_9SArXM"
+            ];
+            
+            const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+            const iframe = document.querySelector('.video-container iframe');
+            if (iframe) {
+                iframe.src = `https://www.youtube.com/embed/${randomVideo}?autoplay=0&rel=0`;
+            }
+            
+            // Efecto hover suave para los botones
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.transform = 'translateY(-5px)';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Efecto de carga suave para todo el contenido
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
