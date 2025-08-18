@@ -8,16 +8,43 @@
   body { margin: 0; font-family: Arial, sans-serif; background: #0f0f1a; color: #fff; overflow-x: hidden; position: relative; }
   canvas#particles { position: fixed; top:0; left:0; z-index:0; }
 
+  /* ===== HEADER ===== */
   header {
     padding: 15px;
-    text-align: center;
     background: rgba(26,26,46,0.85);
     backdrop-filter: blur(5px);
     position: relative;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
   }
+
+  /* Logo + Nombre */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #4cc9f0;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(76,201,240,0.8);
+    transition: transform 0.2s;
+  }
+  .brand:hover { transform: scale(1.05); }
+
+  .brand-logo {
+    width: 45px;  /* tamaño recomendado */
+    height: 45px;
+    border-radius: 10px; /* opcional: esquinas redondeadas */
+  }
+
+  /* Barra de búsqueda */
   header input {
-    width: 90%;
+    flex: 1;
     max-width: 500px;
     padding: 10px;
     border-radius: 12px;
@@ -30,6 +57,7 @@
   }
   header input:focus { background: rgba(76,201,240,0.2); }
 
+  /* ===== TARJETAS ===== */
   .card-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -94,6 +122,7 @@
     .card img { width:80%; height:auto; }
   }
   @media screen and (max-width:480px) {
+    header { flex-direction: column; }
     header input { width:95%; }
     .card img { width:100%; }
     .card-content h3 { font-size:18px; }
@@ -106,7 +135,12 @@
 
 <canvas id="particles"></canvas>
 
+<!-- ===== HEADER con logo + texto + búsqueda ===== -->
 <header>
+  <a href="https://t.me/WeroScripts" target="_blank" class="brand">
+    <img src="Assets/Chuchopag.png" alt="Logo WeroScripts" class="brand-logo">
+    WeroScripts
+  </a>
   <input type="text" id="search" placeholder="Buscar script...">
 </header>
 
@@ -203,15 +237,12 @@
   const closeBtn = document.getElementById("closeBtn");
 
   function openCard(cardId, htmlFile){
-    // Abrir iframe
     weroHubFrame.style.transition = "opacity 0.5s";
     weroHubFrame.style.opacity = 0;
     weroHubFrame.src = `https://lilwero20.github.io/Web/${htmlFile}`;
     mainContent.style.display = "none";
     iframeContainer.classList.add("show");
     setTimeout(()=>{ weroHubFrame.style.opacity = 1; }, 50);
-
-    // Guardar en hash
     window.location.hash = `menuNum=${cardId}`;
   }
 
@@ -233,7 +264,7 @@
       iframeContainer.classList.remove("show");
       mainContent.style.display = "block";
       weroHubFrame.src = "";
-      window.location.hash = ""; // limpiar hash
+      window.location.hash = "";
     }, 500);
   });
 
@@ -272,12 +303,11 @@
     div.originalTitle = title;
     div.originalSubtitle = subtitle;
     cardsContainer.appendChild(div);
-    initCards(); // re-inicializar con el nuevo cardId
+    initCards();
   }
 
   initCards();
 
-  // Abrir automáticamente si hay hash en la URL
   window.addEventListener("load", ()=>{
     if(window.location.hash.startsWith("#menuNum=")){
       const num = parseInt(window.location.hash.split("=")[1]);
@@ -288,9 +318,8 @@
     }
   });
 
-  // EJEMPLO de creación de tarjetas nuevas
-
-    createTab({
+  // === Ejemplo de tarjetas nuevas ===
+  createTab({
     title: "Steal a Brainrot Chili Hub",
     subtitle: "Auto Buy, Auto Steal, Instant Steal, Super Speed",
     image: "Assets/chili.png",
@@ -318,4 +347,5 @@
     html: "otro.html"
   });
 </script>
-
+</body>
+</html>
