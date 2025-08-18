@@ -8,44 +8,25 @@
   body { margin: 0; font-family: Arial, sans-serif; background: #0f0f1a; color: #fff; overflow-x: hidden; position: relative; }
   canvas#particles { position: fixed; top:0; left:0; z-index:0; }
 
-  /* ===== HEADER ===== */
+  /* HEADER */
   header {
-    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Logo izquierda, buscador derecha */
+    padding: 15px 20px;
     background: rgba(26,26,46,0.85);
     backdrop-filter: blur(5px);
     position: relative;
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
   }
 
-  /* Logo + Nombre */
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: #4cc9f0;
-    font-size: 22px;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(76,201,240,0.8);
-    transition: transform 0.2s;
-  }
-  .brand:hover { transform: scale(1.05); }
-
-  .brand-logo {
-    width: 45px;  /* tamaño recomendado */
-    height: 45px;
-    border-radius: 10px; /* opcional: esquinas redondeadas */
-  }
-
-  /* Barra de búsqueda */
+  header .logo-link { display: inline-block; }
+  header .logo { height: 45px; } /* Ajusta el alto del logo */
+  
   header input {
     flex: 1;
     max-width: 500px;
+    margin-left: 20px; /* espacio entre logo y buscador */
     padding: 10px;
     border-radius: 12px;
     border: none;
@@ -57,7 +38,7 @@
   }
   header input:focus { background: rgba(76,201,240,0.2); }
 
-  /* ===== TARJETAS ===== */
+  /* TARJETAS */
   .card-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -88,6 +69,7 @@
 
   #noResults { text-align:center; font-size:18px; color:#f72585; margin-top:20px; display:none; }
 
+  /* IFRAME */
   #iframeContainer {
     display:none;
     position:fixed; top:0; left:0;
@@ -122,7 +104,6 @@
     .card img { width:80%; height:auto; }
   }
   @media screen and (max-width:480px) {
-    header { flex-direction: column; }
     header input { width:95%; }
     .card img { width:100%; }
     .card-content h3 { font-size:18px; }
@@ -135,12 +116,12 @@
 
 <canvas id="particles"></canvas>
 
-<!-- ===== HEADER con logo + texto + búsqueda ===== -->
 <header>
-  <a href="https://t.me/WeroScripts" target="_blank" class="brand">
-    <img src="Assets/Chuchopag.png" alt="Logo WeroScripts" class="brand-logo">
-    WeroScripts
+  <!-- Logo clickeable -->
+  <a href="https://www.youtube.com/@WeroScripts" target="_blank" class="logo-link">
+    <img src="Assets/logo.png" alt="WeroScripts" class="logo">
   </a>
+  <!-- Barra de búsqueda -->
   <input type="text" id="search" placeholder="Buscar script...">
 </header>
 
@@ -318,7 +299,7 @@
     }
   });
 
-  // === Ejemplo de tarjetas nuevas ===
+  // EJEMPLO de creación de tarjetas nuevas
   createTab({
     title: "Steal a Brainrot Chili Hub",
     subtitle: "Auto Buy, Auto Steal, Instant Steal, Super Speed",
@@ -347,5 +328,6 @@
     html: "otro.html"
   });
 </script>
+
 </body>
 </html>
