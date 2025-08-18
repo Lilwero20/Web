@@ -12,7 +12,7 @@
   header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Logo izquierda, buscador derecha */
+    justify-content: flex-start; /* Logo y buscador alineados a la izquierda */
     padding: 15px 20px;
     background: rgba(26,26,46,0.85);
     backdrop-filter: blur(5px);
@@ -24,8 +24,7 @@
   header .logo { height: 45px; } /* Ajusta el alto del logo */
   
   header input {
-    flex: 1;
-    max-width: 500px;
+    width: 300px; /* ancho fijo */
     margin-left: 20px; /* espacio entre logo y buscador */
     padding: 10px;
     border-radius: 12px;
@@ -331,4 +330,3 @@
 
 </body>
 </html>
-
